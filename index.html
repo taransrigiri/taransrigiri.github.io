@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taran Srigiri Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a finance analyst's tear sheet: exact, confident, quiet
+   IDEA: an equity research tear sheet, where every project is a live model you can poke
+   PICTURE: a working Black-Scholes pricer with its option-value curve, top of page
+   COLOUR and TYPE: ice ground, deep ink, one hot pink accent; Space Grotesk + Inter
+   LAYOUT: title strip, live pricer, project panels, live DCF, experience, contact */
+:root{color-scheme:light dark;
+--bg:light-dark(#dff1f7,#06222e);--ink:light-dark(#06222e,#e4f3f8);--panel:light-dark(#ffffff,#0b3142);
+--line:light-dark(#b7d9e4,#1b4a5c);--mute:light-dark(#3d5f6b,#9cc3cf);--hot:#ff2e7e;--hotSoft:light-dark(#ffe1ec,#4a1630)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Space Grotesk",Inter,sans-serif;font-weight:600;line-height:1.05;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,5vw,52px)}h2{font-size:clamp(26px,3.4vw,36px);margin-bottom:8px}h3{font-size:20px}
+a{color:inherit}
+.band{padding:clamp(28px,4vw,64px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.mute{color:var(--mute)}.small{font-size:13px}
+header.band{padding-bottom:20px}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:end}
+.tag{font-size:18px;margin:10px 0 0;max-width:640px}
+nav.scroll{display:flex;gap:8px;margin-top:20px;overflow-x:auto}
+nav a{flex:none;text-decoration:none;padding:10px 16px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-weight:500;min-height:44px;display:inline-flex;align-items:center}
+nav a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,2.4vw,28px)}
+.tool{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:28px}
+.inputs{display:grid;gap:12px}
+label{display:grid;grid-template-columns:1fr 92px;gap:4px 10px;align-items:center;font-size:14px;font-weight:500}
+label input[type=range]{grid-column:1/-1;accent-color:var(--hot);height:28px}
+label output{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.res{display:flex;flex-wrap:wrap;gap:12px 32px;align-items:baseline;margin-bottom:6px}
+.big{font-family:"Space Grotesk";font-size:clamp(34px,5vw,52px);font-variant-numeric:tabular-nums;white-space:nowrap}
+.big small{font-size:15px;font-family:Inter;color:var(--mute);display:block}
+.greeks{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
+.greeks div{background:var(--bg);border-radius:10px;padding:8px 10px;text-align:right;font-variant-numeric:tabular-nums}
+.greeks span{display:block;font-size:13px;color:var(--mute);text-align:left}
+.fig{position:relative;min-height:300px;margin-top:10px}.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:22px}
+.proj .when{font-size:13px;color:var(--mute);margin:6px 0 10px}
+.proj ul{padding-left:18px;margin:10px 0}.proj li{margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chips span{font-size:13px;padding:4px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+.outcome{background:var(--hotSoft);border-radius:10px;padding:10px 12px;font-weight:500;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+td.base{background:var(--hot);color:#fff;font-weight:600;border-radius:6px}
+pre,.scroll{overflow-x:auto}
+.xp{display:grid;gap:14px;margin-top:20px}
+.xp .card{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:18px}
+footer{text-align:center}
+button.copy{font:inherit;font-weight:600;min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--hot);color:#fff;cursor:pointer}
+html{scroll-padding-top:20px}
+@media(max-width:860px){.tool{grid-template-columns:minmax(0,1fr)}.grid3{grid-template-columns:minmax(0,1fr)}.xp .card{grid-template-columns:minmax(0,1fr);gap:6px}}
+@media(max-width:520px){.greeks{grid-template-columns:repeat(3,minmax(0,1fr))}table{font-size:13px}th,td{padding:6px}}
+@media(prefers-reduced-motion:no-preference){#curve path.live{transition:d .2s}}
+</style>
+</head>
+<body>
+<header class="band"><div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Taran Srigiri</h1>
+      <p class="tag">MS Finance at Johns Hopkins Carey · Valuation, financial modeling and export finance</p>
+    </div>
+    <p class="small mute" style="margin:0">Washington, DC</p>
+  </div>
+  <nav class="scroll" aria-label="Sections">
+    <a href="#pricer">Black-Scholes pricer</a><a href="#projects">Projects</a><a href="#dcf">DCF model</a><a href="#experience">Experience</a><a href="#contact">Contact</a>
+  </nav>
+</div></header>
+
+<section class="band" id="pricer" style="padding-top:8px"><div class="wrap card">
+  <div class="tool">
+    <div>
+      <h2>Price an option</h2>
+      <p class="mute small" style="margin-top:0">A live version of my Black-Scholes model. Move the inputs and the price and Greeks update.</p>
+      <div class="inputs" id="bsIn"></div>
+    </div>
+    <div>
+      <div class="res">
+        <div class="big" id="callV">–<small>Call value</small></div>
+        <div class="big" id="putV">–<small>Put value</small></div>
+      </div>
+      <div class="greeks" id="greeks"></div>
+      <div class="fig"><svg id="curve" role="img" aria-label="Call and put value across stock prices"></svg></div>
+      <p class="small mute" style="margin:6px 0 0"><span style="color:var(--hot)">━</span> Call &nbsp; <span>┅</span> Put &nbsp; ● current stock price. European options, no dividends.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="band" id="projects"><div class="wrap">
+  <h2>Projects</h2>
+  <p class="mute" style="margin:0">Models I've built, from export finance work to valuation.</p>
+  <div class="grid3">
+    <article class="card proj">
+      <h3>Three-statement models for real funding decisions</h3>
+      <p class="when">KUM International · 2023–2026</p>
+      <p>Built integrated P&amp;L, balance sheet and cash flow models for a granite export business.</p>
+      <div class="outcome">Won approval for a ₹5 crore+ ($550K+) machinery and quarry expansion, and backed ₹1 crore+ in bank credit.</div>
+      <div class="chips"><span>Financial modeling</span><span>Financial statement analysis</span><span>Excel</span></div>
+    </article>
+    <article class="card proj">
+      <h3>Multi-company DCF valuation model</h3>
+      <p class="when">Personal project · Aug 2025</p>
+      <ul>
+        <li>Multi-year free cash flow forecasts from company financials</li>
+        <li>WACC discounting and Gordon growth terminal value</li>
+        <li>Intrinsic value vs. market price, with WACC × growth sensitivity tables</li>
+        <li>Automated in Python to run several companies at once, checked against Excel</li>
+      </ul>
+      <div class="chips"><span>DCF</span><span>Python</span><span>pandas</span><span>Excel</span></div>
+    </article>
+    <article class="card proj">
+      <h3>Black-Scholes option pricing &amp; Greeks</h3>
+      <p class="when">Personal project · 2025</p>
+      <ul>
+        <li>Prices European calls and puts</li>
+        <li>Delta, gamma, vega, theta and rho sensitivities</li>
+        <li>Implied volatility solved from market prices, compared with historical volatility</li>
+        <li>Charts on real stock and option data, checked against an Excel build</li>
+      </ul>
+      <div class="chips"><span>Derivatives</span><span>Python</span><span>NumPy / SciPy</span><span>Excel</span></div>
+    </article>
+  </div>
+</div></section>
+
+<section class="band" id="dcf" style="padding-top:0"><div class="wrap card">
+  <div class="tool">
+    <div>
+      <h2>Run a DCF</h2>
+      <p class="mute small" style="margin-top:0">A simplified version of my DCF model. Sample inputs for an illustrative company, not a real valuation.</p>
+      <div class="inputs" id="dcfIn"></div>
+    </div>
+    <div>
+      <div class="res">
+        <div class="big" id="vps">–<small>Value per share</small></div>
+        <div class="big" id="ups">–<small>vs. market price</small></div>
+        <div class="big" id="tvs" style="font-size:clamp(26px,3.4vw,36px)">–<small>Terminal value share of EV</small></div>
+      </div>
+      <h3 style="margin:18px 0 8px">Sensitivity: value per share</h3>
+      <p class="small mute" style="margin:0 0 6px">Rows: WACC. Columns: terminal growth. Highlighted cell = your current inputs.</p>
+      <div class="scroll"><table id="sens"></table></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="band" id="experience" style="padding-top:0"><div class="wrap">
+  <h2>Experience</h2>
+  <div class="xp">
+    <div class="card"><div><h3>KUM International</h3><p class="small mute" style="margin:4px 0 0">Partner, Business Operations · 2023–2026</p></div>
+      <p style="margin:0">Led capital decisions, financing and market expansion for a granite exporter: a ₹5 crore+ expansion approved, ₹1 crore+ in bank credit including packing credit, 7% revenue growth from 2 new markets, and 8% lower logistics costs.</p></div>
+    <div class="card"><div><h3>BG Granites</h3><p class="small mute" style="margin:4px 0 0">Finance Operations Manager · 2023–2026</p></div>
+      <p style="margin:0">Ran finance operations for a 100% export-oriented business with $12M+ in annual revenue and 500+ workers. Secured a $500K+ export contract, cut operating expenses 15%, and reconciled 1,000+ transactions a month.</p></div>
+    <div class="card"><div><h3>JSW Mangalore Container Terminal</h3><p class="small mute" style="margin:4px 0 0">Finance Intern · Jun 2025</p></div>
+      <p style="margin:0">Processed 150+ purchase orders and invoices a week in SAP at a high-volume port terminal.</p></div>
+    <div class="card"><div><h3>Education</h3><p class="small mute" style="margin:4px 0 0">2023–2027</p></div>
+      <p style="margin:0">MS Finance, Johns Hopkins Carey Business School (Dean's Scholar, through Dec 2027). B.Com, University of Mysore (GPA 3.67).</p></div>
+  </div>
+</div></section>
+
+<footer class="band" id="contact"><div class="wrap">
+  <h2>Let's talk</h2>
+  <p style="font-weight:600;font-size:18px">tsrigir1@jh.edu</p>
+  <p><button class="copy" id="copyMail" type="button">Copy email</button></p>
+  <p><a href="https://www.linkedin.com/in/t79/">linkedin.com/in/t79</a></p>
+</div></footer>
+
+<script>
+{
+const $=id=>document.getElementById(id);
+const fmt=(x,d=2)=>Number.isFinite(x)?x.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):'n/a';
+function slider(host,key,o){host.insertAdjacentHTML('beforeend',`<label for="${key}">${o.l}<output id="${key}o"></output><input type="range" id="${key}" min="${o.min}" max="${o.max}" step="${o.st}" value="${o.v}"></label>`)}
+function erf(x){const s=Math.sign(x);x=Math.abs(x);const t=1/(1+0.3275911*x);const y=1-((((1.061405429*t-1.453152027)*t+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return s*y}
+const N=x=>0.5*(1+erf(x/Math.SQRT2)), n=x=>Math.exp(-(x**2)/2)/Math.sqrt(2*Math.PI);
+function bs(S,K,T,r,v){
+  if(T<=0||v<=0)return{c:Math.max(S-K,0),p:Math.max(K-S,0),d:0,g:0,ve:0,th:0,rh:0};
+  const d1=(Math.log(S/K)+(r+v*v/2)*T)/(v*Math.sqrt(T)),d2=d1-v*Math.sqrt(T),dk=K*Math.exp(-r*T);
+  return{c:S*N(d1)-dk*N(d2),p:dk*N(-d2)-S*N(-d1),d:N(d1),g:n(d1)/(S*v*Math.sqrt(T)),ve:S*n(d1)*Math.sqrt(T)/100,
+    th:(-S*n(d1)*v/(2*Math.sqrt(T))-r*dk*N(d2))/365,rh:K*T*Math.exp(-r*T)*N(d2)/100}}
+const bsP={S:{l:'Stock price ($)',min:10,max:300,st:1,v:100},K:{l:'Strike ($)',min:10,max:300,st:1,v:105},T:{l:'Years to expiry',min:0.05,max:3,st:0.05,v:0.5},r:{l:'Risk-free rate (%)',min:0,max:10,st:0.1,v:4.5},v:{l:'Volatility (%)',min:5,max:100,st:1,v:25}};
+for(const k in bsP)slider($('bsIn'),'bs'+k,bsP[k]);
+const g=k=>+$(k).value;
+const curve=$('curve');
+function drawCurve(){
+  const S=g('bsS'),K=g('bsK'),T=g('bsT'),r=g('bsr')/100,v=g('bsv')/100;
+  const W=curve.clientWidth,H=curve.clientHeight,pl=W<520?34:46,pb=28,pt=10,pr=10;
+  const lo=Math.max(1,K*0.4),hi=K*1.6,pts=80,xs=[...Array(pts+1)].map((_,i)=>lo+(hi-lo)*i/pts);
+  const cs=xs.map(x=>bs(x,K,T,r,v)),ymax=Math.max(...cs.map(o=>Math.max(o.c,o.p)))*1.08||1;
+  const X=x=>pl+(x-lo)/(hi-lo)*(W-pl-pr),Y=y=>pt+(1-y/ymax)*(H-pt-pb);
+  const path=f=>xs.map((x,i)=>(i?'L':'M')+X(x).toFixed(1)+' '+Y(f(cs[i])).toFixed(1)).join('');
+  const ticks=[0,0.5,1].map(t=>ymax/1.08*t);
+  const cur=bs(S,K,T,r,v),inRange=S>=lo&&S<=hi;
+  curve.innerHTML=`<g fill="none" stroke="var(--line)">${ticks.map(t=>`<line x1="${pl}" x2="${W-pr}" y1="${Y(t)}" y2="${Y(t)}"/>`).join('')}</g>
+  <g font-size="12" fill="var(--mute)">${ticks.map(t=>`<text x="${pl-6}" y="${Y(t)+4}" text-anchor="end">${t.toFixed(0)}</text>`).join('')}
+  <text x="${X(lo)}" y="${H-8}">$${lo.toFixed(0)}</text><text x="${X(K)}" y="${H-8}" text-anchor="middle">Strike $${K}</text><text x="${X(hi)}" y="${H-8}" text-anchor="end">$${hi.toFixed(0)}</text></g>
+  <line x1="${X(K)}" x2="${X(K)}" y1="${pt}" y2="${H-pb}" stroke="var(--line)" stroke-dasharray="3 4"/>
+  <path class="live" d="${path(o=>o.p)}" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 5"/>
+  <path class="live" d="${path(o=>o.c)}" fill="none" stroke="var(--hot)" stroke-width="3"/>
+  ${inRange?`<circle cx="${X(S)}" cy="${Y(cur.c)}" r="6" fill="var(--hot)" stroke="var(--panel)" stroke-width="2"/><circle cx="${X(S)}" cy="${Y(cur.p)}" r="5" fill="var(--ink)" stroke="var(--panel)" stroke-width="2"/>`:''}`;
+}
+function runBS(){
+  for(const k in bsP){const v=g('bs'+k);$('bs'+k+'o').textContent=k==='T'?v.toFixed(2):k==='S'||k==='K'?'$'+v:v.toFixed(k==='r'?1:0)+'%'}
+  const o=bs(g('bsS'),g('bsK'),g('bsT'),g('bsr')/100,g('bsv')/100);
+  $('callV').firstChild.textContent='$'+fmt(o.c);$('putV').firstChild.textContent='$'+fmt(o.p);
+  $('greeks').innerHTML=[['Delta',o.d,3],['Gamma',o.g,4],['Vega',o.ve,3],['Theta/day',o.th,3],['Rho',o.rh,3]].map(([l,v,d])=>`<div><span>${l}</span>${fmt(v,d)}</div>`).join('');
+  drawCurve();
+}
+$('bsIn').addEventListener('input',runBS);
+const ro=new ResizeObserver(drawCurve);ro.observe(curve);
+
+const dP={rev:{l:'Revenue ($M)',min:100,max:5000,st:50,v:1000},gr:{l:'Revenue growth, yrs 1–5 (%)',min:0,max:30,st:0.5,v:10},mg:{l:'FCF margin (%)',min:2,max:40,st:0.5,v:12},w:{l:'WACC (%)',min:6,max:15,st:0.25,v:10},tg:{l:'Terminal growth (%)',min:0,max:5,st:0.25,v:3},nd:{l:'Net debt ($M)',min:0,max:2000,st:25,v:200},sh:{l:'Shares (M)',min:10,max:500,st:5,v:100},px:{l:'Market price ($)',min:1,max:300,st:1,v:15}};
+for(const k in dP)slider($('dcfIn'),'d'+k,dP[k]);
+function dcf(w,tg){
+  const rev=g('drev'),gr=g('dgr')/100,mg=g('dmg')/100,yrs=10;let R=rev,pv=0,f=0;
+  for(let t=1;t<=yrs;t++){const gt=t<=5?gr:gr+(tg-gr)*(t-5)/5;R*=1+gt;f=R*mg;pv+=f/(1+w)**t}
+  if(tg>=w)return{v:NaN,share:NaN};
+  const tv=f*(1+tg)/(w-tg)/(1+w)**yrs,ev=pv+tv;
+  return{v:(ev-g('dnd'))/g('dsh'),share:tv/ev}}
+function runDCF(){
+  for(const k in dP){const v=g('d'+k);$('d'+k+'o').textContent=['gr','mg','w','tg'].includes(k)?v.toFixed(2).replace(/\.?0+$/,'')+'%':k==='px'?'$'+v:v.toLocaleString('en-US')}
+  const w=g('dw')/100,tg=g('dtg')/100,o=dcf(w,tg),up=(o.v/g('dpx')-1)*100;
+  $('vps').firstChild.textContent=Number.isFinite(o.v)?'$'+fmt(o.v):'n/a';
+  $('ups').firstChild.textContent=Number.isFinite(up)?(up>=0?'+':'')+fmt(up,1)+'%':'n/a';
+  $('tvs').firstChild.textContent=Number.isFinite(o.share)?fmt(o.share*100,0)+'%':'n/a';
+  const ws=[-1,-0.5,0,0.5,1].map(d=>w+d/100),gs=[-1,-0.5,0,0.5,1].map(d=>tg+d/100).filter(x=>x>=0);
+  $('sens').innerHTML=`<thead><tr><th>WACC \\ g</th>${gs.map(x=>`<th>${(x*100).toFixed(2)}%</th>`).join('')}</tr></thead><tbody>${ws.map(wi=>`<tr><td>${(wi*100).toFixed(2)}%</td>${gs.map(gi=>{const v=dcf(wi,gi).v;return `<td class="${wi===w&&gi===tg?'base':''}">${Number.isFinite(v)?'$'+fmt(v):'n/a'}</td>`}).join('')}</tr>`).join('')}</tbody>`;
+}
+$('dcfIn').addEventListener('input',runDCF);
+runBS();runDCF();
+$('copyMail').addEventListener('click',async e=>{try{await navigator.clipboard.writeText('tsrigir1@jh.edu');e.target.textContent='Copied'}catch(_){e.target.textContent='Select the email above to copy'}});
+}
+</script>
+</body>
+</html>
